@@ -27,7 +27,7 @@ public class PlayerBoardController {
     playerBoard.setSteelAmount(playerBoard.getSteelAmount() + playerBoard.getSteelProduction());
     playerBoard.setTitaniumAmount(playerBoard.getTitaniumAmount() + playerBoard.getTitaniumProduction());
     playerBoard.setPlantsAmount(playerBoard.getPlantsAmount() + playerBoard.getPlantsProduction());
-    playerBoard.setEnergyAmount(playerBoard.getEnergyAmount() + playerBoard.getEnergyProduction());
-    playerBoard.setHeatAmount(playerBoard.getHeatAmount() + playerBoard.getHeatProduction());
+    playerBoard.setHeatAmount(playerBoard.getHeatAmount() + playerBoard.getHeatProduction() + playerBoard.getEnergyAmount());
+    playerBoard.setEnergyAmount(playerBoard.getEnergyProduction());
   }
 }
