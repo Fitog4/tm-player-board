@@ -3,12 +3,23 @@ package org.fitog4.model;
 public class PlayerBoard {
 
   private int terraformRating;
-  private Resource megaCredits;
-  private Resource steel;
-  private Resource titanium;
-  private Resource plants;
-  private Resource energy;
-  private Resource heat;
+
+  private int megaCreditsAmount;
+  private int steelAmount;
+  private int titaniumAmount;
+  private int plantsAmount;
+  private int energyAmount;
+  private int heatAmount;
+
+  private int megaCreditsProduction;
+  private int steelProduction;
+  private int titaniumProduction;
+  private int plantsProduction;
+  private int energyProduction;
+  private int heatProduction;
+
+  private int megaCreditsPerUnitOfSteel;
+  private int megaCreditsPerUnitOfTitanium;
 
   public int getTerraformRating() {
     return terraformRating;
@@ -18,51 +29,115 @@ public class PlayerBoard {
     this.terraformRating = terraformRating;
   }
 
-  public Resource getMegaCredits() {
-    return megaCredits;
+  public int getMegaCreditsAmount() {
+    return megaCreditsAmount;
   }
 
-  public void setMegaCredits(Resource megaCredits) {
-    this.megaCredits = megaCredits;
+  public void setMegaCreditsAmount(int megaCreditsAmount) {
+    this.megaCreditsAmount = megaCreditsAmount;
   }
 
-  public Resource getSteel() {
-    return steel;
+  public int getSteelAmount() {
+    return steelAmount;
   }
 
-  public void setSteel(Resource steel) {
-    this.steel = steel;
+  public void setSteelAmount(int steelAmount) {
+    this.steelAmount = steelAmount;
   }
 
-  public Resource getTitanium() {
-    return titanium;
+  public int getTitaniumAmount() {
+    return titaniumAmount;
   }
 
-  public void setTitanium(Resource titanium) {
-    this.titanium = titanium;
+  public void setTitaniumAmount(int titaniumAmount) {
+    this.titaniumAmount = titaniumAmount;
   }
 
-  public Resource getPlants() {
-    return plants;
+  public int getPlantsAmount() {
+    return plantsAmount;
   }
 
-  public void setPlants(Resource plants) {
-    this.plants = plants;
+  public void setPlantsAmount(int plantsAmount) {
+    this.plantsAmount = plantsAmount;
   }
 
-  public Resource getEnergy() {
-    return energy;
+  public int getEnergyAmount() {
+    return energyAmount;
   }
 
-  public void setEnergy(Resource energy) {
-    this.energy = energy;
+  public void setEnergyAmount(int energyAmount) {
+    this.energyAmount = energyAmount;
   }
 
-  public Resource getHeat() {
-    return heat;
+  public int getHeatAmount() {
+    return heatAmount;
   }
 
-  public void setHeat(Resource heat) {
-    this.heat = heat;
+  public void setHeatAmount(int heatAmount) {
+    this.heatAmount = heatAmount;
+  }
+
+  public int getMegaCreditsProduction() {
+    return megaCreditsProduction;
+  }
+
+  public void setMegaCreditsProduction(int megaCreditsProduction) {
+    this.megaCreditsProduction = megaCreditsProduction;
+  }
+
+  public int getSteelProduction() {
+    return steelProduction;
+  }
+
+  public void setSteelProduction(int steelProduction) {
+    this.steelProduction = steelProduction;
+  }
+
+  public int getTitaniumProduction() {
+    return titaniumProduction;
+  }
+
+  public void setTitaniumProduction(int titaniumProduction) {
+    this.titaniumProduction = titaniumProduction;
+  }
+
+  public int getPlantsProduction() {
+    return plantsProduction;
+  }
+
+  public void setPlantsProduction(int plantsProduction) {
+    this.plantsProduction = plantsProduction;
+  }
+
+  public int getEnergyProduction() {
+    return energyProduction;
+  }
+
+  public void setEnergyProduction(int energyProduction) {
+    this.energyProduction = energyProduction;
+  }
+
+  public int getHeatProduction() {
+    return heatProduction;
+  }
+
+  public void setHeatProduction(int heatProduction) {
+    this.heatProduction = heatProduction;
+  }
+
+  public int getMegaCreditsPerUnitOfSteel() {
+    return megaCreditsPerUnitOfSteel;
+  }
+
+  public void setMegaCreditsPerUnitOfSteel(int megaCreditsPerUnitOfSteel) {
+    this.megaCreditsPerUnitOfSteel = megaCreditsPerUnitOfSteel;
+  }
+
+  public int getMegaCreditsPerUnitOfTitanium() {
+    return megaCreditsPerUnitOfTitanium;
+  }
+
+  public void setMegaCreditsPerUnitOfTitanium(int megaCreditsPerUnitOfTitanium) {
+    this.megaCreditsPerUnitOfTitanium = megaCreditsPerUnitOfTitanium;
   }
 }
