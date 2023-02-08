@@ -21,4 +21,13 @@ public class PlayerBoardController {
     playerBoard.setEnergyProduction(playerBoard.getEnergyProduction() + resourceChangeDTO.getDeltaEnergy());
     playerBoard.setHeatProduction(playerBoard.getHeatProduction() + resourceChangeDTO.getDeltaHeat());
   }
+
+  public void processProduction(PlayerBoard playerBoard) {
+    playerBoard.setMegaCreditsAmount(playerBoard.getMegaCreditsAmount() + playerBoard.getMegaCreditsProduction());
+    playerBoard.setSteelAmount(playerBoard.getSteelAmount() + playerBoard.getSteelProduction());
+    playerBoard.setTitaniumAmount(playerBoard.getTitaniumAmount() + playerBoard.getTitaniumProduction());
+    playerBoard.setPlantsAmount(playerBoard.getPlantsAmount() + playerBoard.getPlantsProduction());
+    playerBoard.setEnergyAmount(playerBoard.getEnergyAmount() + playerBoard.getEnergyProduction());
+    playerBoard.setHeatAmount(playerBoard.getHeatAmount() + playerBoard.getHeatProduction());
+  }
 }

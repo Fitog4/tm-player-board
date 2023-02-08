@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.fitog4.view.ShellPlayerAction.END_GAME;
 import static org.fitog4.view.ShellPlayerAction.INCREASE_OR_DECREASE_RESOURCE_PRODUCTION;
+import static org.fitog4.view.ShellPlayerAction.PRODUCTION;
 import static org.fitog4.view.ShellPlayerAction.SPEND_OR_EARN_RESOURCES;
 import static org.fitog4.view.ShellPlayerAction.VIEW_PLAYER_BOARD;
 
@@ -63,6 +64,10 @@ public class ShellApp {
         new PlayerBoardController().applyResourceProductionChange(resourceProductionChange, playerBoard);
         shellView.show(playerBoard);
         break;
+      case PRODUCTION:
+        new PlayerBoardController().processProduction(playerBoard);
+        shellView.show(playerBoard);
+        break;
       case END_GAME:
         endGame = true;
         shellView.sayByeToPlayer();
@@ -73,7 +78,7 @@ public class ShellApp {
   private List<ShellPlayerAction> getAvailableActions() {
     switch (mode) {
       case ACTION_PHASE:
-        return List.of(VIEW_PLAYER_BOARD, SPEND_OR_EARN_RESOURCES, INCREASE_OR_DECREASE_RESOURCE_PRODUCTION, END_GAME);
+        return List.of(VIEW_PLAYER_BOARD, SPEND_OR_EARN_RESOURCES, INCREASE_OR_DECREASE_RESOURCE_PRODUCTION, PRODUCTION, END_GAME);
       default:
         return Collections.singletonList(END_GAME);
     }

@@ -4,6 +4,7 @@ public enum ShellPlayerAction {
   VIEW_PLAYER_BOARD("View player board"),
   SPEND_OR_EARN_RESOURCES("Spend or earn resources"),
   INCREASE_OR_DECREASE_RESOURCE_PRODUCTION("Increase or decrease resource production"),
+  PRODUCTION("Production"),
   END_GAME("End the game")
   ;
 
