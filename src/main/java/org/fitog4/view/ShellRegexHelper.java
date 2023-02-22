@@ -1,12 +1,15 @@
 package org.fitog4.view;
 
+import org.fitog4.controller.CardDTO;
 import org.fitog4.controller.ResourceChangeDTO;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class ShellResourceChangeRegexHelper {
+class ShellRegexHelper {
 
   ResourceChangeDTO parseAsResourceChange(String resourceChangeString) {
     ResourceChangeDTO resourceChangeDTO = new ResourceChangeDTO();
@@ -16,6 +19,18 @@ class ShellResourceChangeRegexHelper {
       resourceLetter.getResourceChangeSetter().accept(resourceChangeDTO, change);
     }
     return resourceChangeDTO;
+  }
+
+  List<CardDTO> parseAsAllocation(String allocationString) {
+    ArrayList<CardDTO> result = new ArrayList<>();
+    Matcher matcher = Pattern.compile("(\\d?\\d)([STN]*)").matcher(allocationString.toUpperCase());
+
+    while(matcher.find()) {
+      result.add(new CardDTO(
+          Integer.parseInt(matcher.group(1)), matcher.group(2).contains("N"), matcher.group(2).contains("S"), matcher.group(2).contains("T")));
+    }
+
+    return result;
   }
 
   private int getChangeForResource(String resourceChangeString, ResourceLetter resourceLetter) {

@@ -1,14 +1,15 @@
 package org.fitog4;
 
+import org.fitog4.controller.CardDTO;
 import org.fitog4.controller.PlayerBoardController;
 import org.fitog4.controller.ResourceChangeDTO;
+import org.fitog4.controller.ResourceSimulationDTO;
 import org.fitog4.model.Mode;
 import org.fitog4.model.PlayerBoard;
 import org.fitog4.view.ShellPlayerAction;
 import org.fitog4.view.ShellView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.fitog4.view.ShellPlayerAction.END_GAME;
@@ -17,13 +18,14 @@ import static org.fitog4.view.ShellPlayerAction.PRODUCTION;
 import static org.fitog4.view.ShellPlayerAction.SET_MEGA_CREDITS_PER_STEEL;
 import static org.fitog4.view.ShellPlayerAction.SET_MEGA_CREDITS_PER_TITANIUM;
 import static org.fitog4.view.ShellPlayerAction.SET_TERRAFORMING_RATING;
+import static org.fitog4.view.ShellPlayerAction.SIMULATE_ALLOCATION;
 import static org.fitog4.view.ShellPlayerAction.SPEND_OR_EARN_RESOURCES;
-import static org.fitog4.view.ShellPlayerAction.VIEW_PLAYER_BOARD;
+import static org.fitog4.view.ShellPlayerAction.TOGGLE_MODE;
 
 public class ShellApp {
 
   private final PlayerBoard playerBoard;
-  private final Mode mode;
+  private Mode mode;
   private final ShellView shellView;
   private final List<ShellPlayerAction> availableActions = new ArrayList<>();
   private boolean endGame;
@@ -32,11 +34,11 @@ public class ShellApp {
     this.playerBoard = playerBoard;
     this.mode = mode;
     this.shellView = shellView;
-    availableActions.addAll(getAvailableActions());
+    refreshAvailableActions();
   }
 
   public static void main(String[] args) throws Exception {
-    ShellApp app = new ShellApp(new PlayerBoard(), Mode.ACTION_PHASE, new ShellView());
+    ShellApp app = new ShellApp(new PlayerBoard(), Mode.ACTION, new ShellView());
     app.run();
   }
 
@@ -47,7 +49,7 @@ public class ShellApp {
     shellView.show(playerBoard);
 
     while (!endGame) {
-      ShellPlayerAction playerAction = shellView.askPlayerAction(availableActions);
+      ShellPlayerAction playerAction = shellView.askPlayerAction(availableActions, mode);
       if (playerAction != null) {
         process(playerAction);
       }
@@ -56,8 +58,6 @@ public class ShellApp {
 
   private void process(ShellPlayerAction playerAction) {
     switch (playerAction) {
-      case VIEW_PLAYER_BOARD:
-        break;
       case SPEND_OR_EARN_RESOURCES:
         ResourceChangeDTO resourceAmountChange = shellView.askResourceChange();
         new PlayerBoardController().applyResourceAmountChange(resourceAmountChange, playerBoard);
@@ -81,9 +81,23 @@ public class ShellApp {
         int megaCreditsPerUnitOfTitanium = shellView.askNewValue("M\u20ac per unit of Titanium");
         playerBoard.setMegaCreditsPerUnitOfTitanium(megaCreditsPerUnitOfTitanium);
         break;
+      case TOGGLE_MODE:
+        toggleMode();
+        return;
+      case SIMULATE_ALLOCATION:
+        boolean done = false;
+        while (!done) {
+          List<CardDTO> allocation = shellView.askCardAllocation();
+          ResourceSimulationDTO simulation = new PlayerBoardController().simulateAllocation(allocation, playerBoard);
+          done = shellView.showAndAskIfDone(simulation);
+        }
+        return;
       case END_GAME:
-        endGame = true;
-        shellView.sayByeToPlayer();
+        boolean sure = shellView.askYesNoQuestion("Sure?");
+        if (sure) {
+          endGame = true;
+          shellView.sayByeToPlayer();
+        }
         return;
       default:
         throw new RuntimeException("Player action unknown!");
@@ -92,12 +106,24 @@ public class ShellApp {
     shellView.show(playerBoard);
   }
 
+  private void refreshAvailableActions() {
+    availableActions.clear();
+    availableActions.addAll(getAvailableActions());
+  }
+
+  private void toggleMode() {
+    mode = mode.getOtherMode();
+    refreshAvailableActions();
+  }
+
   private List<ShellPlayerAction> getAvailableActions() {
     switch (mode) {
-      case ACTION_PHASE:
-        return List.of(VIEW_PLAYER_BOARD, SPEND_OR_EARN_RESOURCES, INCREASE_OR_DECREASE_RESOURCE_PRODUCTION, PRODUCTION, SET_TERRAFORMING_RATING, SET_MEGA_CREDITS_PER_STEEL, SET_MEGA_CREDITS_PER_TITANIUM, END_GAME);
+      case ACTION:
+        return List.of(SPEND_OR_EARN_RESOURCES, INCREASE_OR_DECREASE_RESOURCE_PRODUCTION, PRODUCTION, SET_TERRAFORMING_RATING, SET_MEGA_CREDITS_PER_STEEL, SET_MEGA_CREDITS_PER_TITANIUM, TOGGLE_MODE, END_GAME);
+      case SIMULATE_ALLOCATION:
+        return List.of(SIMULATE_ALLOCATION, TOGGLE_MODE, END_GAME);
       default:
-        return Collections.singletonList(END_GAME);
+        throw new IllegalStateException("Change the implementation of this method if you add modes.");
     }
   }
 
@@ -105,5 +131,4 @@ public class ShellApp {
     playerBoard.setMegaCreditsAmount(42);
     playerBoard.setMegaCreditsProduction(3);
   }
-
 }

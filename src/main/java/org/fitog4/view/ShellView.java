@@ -1,6 +1,9 @@
 package org.fitog4.view;
 
+import org.fitog4.controller.CardDTO;
 import org.fitog4.controller.ResourceChangeDTO;
+import org.fitog4.controller.ResourceSimulationDTO;
+import org.fitog4.model.Mode;
 import org.fitog4.model.PlayerBoard;
 
 import java.io.BufferedReader;
@@ -12,7 +15,7 @@ import java.util.stream.IntStream;
 
 public class ShellView {
   public void greetPlayer() {
-    System.out.println("Hello TM-player, welcome to your player board app!");
+    System.out.println("Hello TM-player, welcome to your player board app!\n");
   }
 
   public void show(PlayerBoard playerBoard) {
@@ -38,11 +41,19 @@ public class ShellView {
         playerBoard.getPlantsProduction(),
         playerBoard.getEnergyProduction(),
         playerBoard.getHeatProduction());
-    System.out.format("+------------+-------------+-------------+-------------+-------------+-------------+-------------+%n%n");
+    System.out.format("+------------+-------------+-------------+-------------+-------------+-------------+-------------+%n");
   }
 
-  public ShellPlayerAction askPlayerAction(List<ShellPlayerAction> availableActions) {
-    System.out.println(mapToPlayerPrompt(availableActions));
+  public boolean showAndAskIfDone(ResourceSimulationDTO simulation) {
+    System.out.println("Allocation result:\n" +
+        "\tM\u20ac: " + simulation.getMegaCreditsAmount() + (simulation.getMegaCreditsAmount() < 0 ? " <<< NOT AN OPTION!\n" : "\n") +
+        "\tSteel: " + simulation.getSteelAmount() + "\n" +
+        "\tTitanium: " + simulation.getTitaniumAmount());
+    return !askYesNoQuestion("Would you like to re-allocate?");
+  }
+
+  public ShellPlayerAction askPlayerAction(List<ShellPlayerAction> availableActions, Mode mode) {
+    System.out.println(mapToPlayerPrompt(availableActions, mode));
     return mapToPlayerAction(availableActions, readLine());
   }
 
@@ -51,12 +62,9 @@ public class ShellView {
     ResourceChangeDTO resourceChangeDTO = null;
     while (!confirmed) {
       System.out.println("Insert the desired change as a string of text using resource initials M, S, T, P, E and H (e.g. \"-3T +1P +2E\") and hit enter.");
-      resourceChangeDTO = new ShellResourceChangeRegexHelper().parseAsResourceChange(readLine());
+      resourceChangeDTO = new ShellRegexHelper().parseAsResourceChange(readLine());
       System.out.println(resourceChangeDTO.toString());
-      System.out.println("Correct? (hit n/N for no, any key to continue)");
-      if (!readLine().equalsIgnoreCase("N")) {
-        confirmed = true;
-      }
+      confirmed = askYesNoQuestion("Correct?");
     }
     return resourceChangeDTO;
   }
@@ -73,6 +81,11 @@ public class ShellView {
 
   public void sayByeToPlayer() {
     System.out.println("Bye-bye and till next time!");
+  }
+
+  public boolean askYesNoQuestion(String question) {
+    System.out.println(question + " (hit n/N for no, any key for yes)");
+    return !readLine().equalsIgnoreCase("N");
   }
 
   private String readLine() {
@@ -92,10 +105,15 @@ public class ShellView {
     }
   }
 
-  private String mapToPlayerPrompt(List<ShellPlayerAction> availableActions) {
+  private String mapToPlayerPrompt(List<ShellPlayerAction> availableActions, Mode mode) {
     return "\nChoose your action (type the number and press enter):\n"
         + IntStream.range(1, availableActions.size() + 1)
-        .mapToObj(i -> "\t" + i + ") " + availableActions.get(i - 1).getLabel())
+        .mapToObj(i -> String.format("\t" + i + ") " + availableActions.get(i - 1).getLabel(), mode.getOtherMode().getLabel()))
         .collect(Collectors.joining("\n"));
+  }
+
+  public List<CardDTO> askCardAllocation() {
+    System.out.println("Insert the card allocation as a string of text using numbers for card cost followed by N for new cards to purchase, S for steel cards and T for titanium cards (e.g. \"8 7N 3S 4TN\") and hit enter.");
+    return new ShellRegexHelper().parseAsAllocation(readLine());
   }
 }
