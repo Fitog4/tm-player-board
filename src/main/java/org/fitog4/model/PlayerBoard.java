@@ -2,7 +2,7 @@ package org.fitog4.model;
 
 public class PlayerBoard {
 
-  private int terraformRating;
+  private int terraformRating = 20;
 
   private int megaCreditsAmount;
   private int steelAmount;
@@ -18,8 +18,8 @@ public class PlayerBoard {
   private int energyProduction;
   private int heatProduction;
 
-  private int megaCreditsPerUnitOfSteel;
-  private int megaCreditsPerUnitOfTitanium;
+  private int megaCreditsPerUnitOfSteel = 2;
+  private int megaCreditsPerUnitOfTitanium = 3;
 
   public int getTerraformRating() {
     return terraformRating;

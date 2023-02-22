@@ -23,7 +23,7 @@ public class PlayerBoardController {
   }
 
   public void processProduction(PlayerBoard playerBoard) {
-    playerBoard.setMegaCreditsAmount(playerBoard.getMegaCreditsAmount() + playerBoard.getMegaCreditsProduction());
+    playerBoard.setMegaCreditsAmount(playerBoard.getMegaCreditsAmount() + playerBoard.getMegaCreditsProduction() + playerBoard.getTerraformRating());
     playerBoard.setSteelAmount(playerBoard.getSteelAmount() + playerBoard.getSteelProduction());
     playerBoard.setTitaniumAmount(playerBoard.getTitaniumAmount() + playerBoard.getTitaniumProduction());
     playerBoard.setPlantsAmount(playerBoard.getPlantsAmount() + playerBoard.getPlantsProduction());

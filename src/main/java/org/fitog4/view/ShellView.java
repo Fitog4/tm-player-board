@@ -16,10 +16,13 @@ public class ShellView {
   }
 
   public void show(PlayerBoard playerBoard) {
-    String format = "| %-10s | %-11d | %-11d | %-11d | %-11d | %-11d | %-11d |%n";
+    String format = "| %-10s | %-11s | %-11d | %-11d | %-11d | %-11d | %-11d |%n";
 
     System.out.format("+------------+-------------+-------------+-------------+-------------+-------------+-------------+%n");
     System.out.format("|            | MegaCredits | Steel       | Titanium    | Plants      | Energy      | Heat        |%n");
+    System.out.format("|            | (M\u20ac)        | %-11s | %-11s |             |             |             |%n",
+        String.format("(=%d M\u20ac)", playerBoard.getMegaCreditsPerUnitOfSteel()),
+        String.format("(=%d M\u20ac)", playerBoard.getMegaCreditsPerUnitOfTitanium()));
     System.out.format("+------------+-------------+-------------+-------------+-------------+-------------+-------------+%n");
     System.out.format(format, "Amount",
         playerBoard.getMegaCreditsAmount(),
@@ -29,7 +32,7 @@ public class ShellView {
         playerBoard.getEnergyAmount(),
         playerBoard.getHeatAmount());
     System.out.format(format, "Production",
-        playerBoard.getMegaCreditsProduction(),
+        playerBoard.getTerraformRating() + "TR" + String.format(" + %d", playerBoard.getMegaCreditsProduction()),
         playerBoard.getSteelProduction(),
         playerBoard.getTitaniumProduction(),
         playerBoard.getPlantsProduction(),
@@ -38,12 +41,12 @@ public class ShellView {
     System.out.format("+------------+-------------+-------------+-------------+-------------+-------------+-------------+%n%n");
   }
 
-  public ShellPlayerAction getPlayerAction(List<ShellPlayerAction> availableActions) {
+  public ShellPlayerAction askPlayerAction(List<ShellPlayerAction> availableActions) {
     System.out.println(mapToPlayerPrompt(availableActions));
     return mapToPlayerAction(availableActions, readLine());
   }
 
-  public ResourceChangeDTO getResourceChange() {
+  public ResourceChangeDTO askResourceChange() {
     boolean confirmed = false;
     ResourceChangeDTO resourceChangeDTO = null;
     while (!confirmed) {
@@ -56,6 +59,16 @@ public class ShellView {
       }
     }
     return resourceChangeDTO;
+  }
+
+  public int askNewValue(String label) {
+    System.out.println("Insert " + label + ":");
+    try {
+      return Integer.parseInt(readLine());
+    } catch (NumberFormatException ignored) {
+      System.out.println("Please insert a number.");
+      return askNewValue(label);
+    }
   }
 
   public void sayByeToPlayer() {
