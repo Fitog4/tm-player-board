@@ -1,6 +1,7 @@
 package org.fitog4.model;
 
 public class PlayerBoard {
+  private Integer playerBoardId;
 
   private int terraformRating = 20;
 
@@ -20,6 +21,14 @@ public class PlayerBoard {
 
   private int megaCreditsPerUnitOfSteel = 2;
   private int megaCreditsPerUnitOfTitanium = 3;
+
+  public Integer getPlayerBoardId() {
+    return playerBoardId;
+  }
+
+  public void setPlayerBoardId(Integer playerBoardId) {
+    this.playerBoardId = playerBoardId;
+  }
 
   public int getTerraformRating() {
     return terraformRating;
