@@ -41,13 +41,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-<!--      todo filippo capire perche ci vuole questa versione e come fare a capire che versioni son incluse nel web server -->
+
   <dependencies>
     <dependency>
       <groupId>org.jboss.resteasy</groupId>
       <artifactId>resteasy-jaxrs</artifactId>
       <scope>provided</scope>
-      <version>3.6.1.SP7</version>
+      <version>3.15.6.Final</version>
     </dependency>
     <dependency>
       <groupId>jakarta.platform</groupId>

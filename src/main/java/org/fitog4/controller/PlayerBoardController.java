@@ -72,7 +72,7 @@ public class PlayerBoardController {
     return simulationDTO;
   }
 
-  // todo refactor, too many parameters
+  // todo when added to the api: refactor, too many parameters
   private void processCardsPayableInResource(ArrayList<CardDTO> accountedForCards,
       List<CardDTO> allocation,
       ResourceSimulationDTO simulationDTO,

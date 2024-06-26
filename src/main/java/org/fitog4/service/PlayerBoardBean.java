@@ -6,7 +6,6 @@ import org.fitog4.model.PlayerBoard;
 import java.io.Serializable;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-// todo filippo: I am not sure why, but I need a bean.xml for this bean
 @ApplicationScoped
 public class PlayerBoardBean implements Serializable {
 
@@ -16,7 +15,6 @@ public class PlayerBoardBean implements Serializable {
 
   public PlayerBoard addNewPlayerBoard() {
     PlayerBoard playerBoard = new PlayerBoard();
-    // todo fili improve ID generation mechanism - this is also not thread-safe
     playerBoard.setPlayerBoardId(playerBoards.size());
     playerBoards.add(playerBoard);
     return playerBoard;
