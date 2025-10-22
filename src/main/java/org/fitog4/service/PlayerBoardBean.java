@@ -1,26 +1,35 @@
 package org.fitog4.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.fitog4.model.PlayerBoard;
 
 import java.io.Serializable;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static jakarta.transaction.Transactional.TxType.REQUIRES_NEW;
+
 @ApplicationScoped
+@Transactional(REQUIRES_NEW)
 public class PlayerBoardBean implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    @PersistenceContext(unitName = "defaultPU")
+    private EntityManager em;
 
-  private CopyOnWriteArrayList<PlayerBoard> playerBoards = new CopyOnWriteArrayList<>();
+    private static final long serialVersionUID = 1L;
 
-  public PlayerBoard addNewPlayerBoard() {
-    PlayerBoard playerBoard = new PlayerBoard();
-    playerBoard.setPlayerBoardId(playerBoards.size());
-    playerBoards.add(playerBoard);
-    return playerBoard;
-  }
+    private CopyOnWriteArrayList<PlayerBoard> playerBoards = new CopyOnWriteArrayList<>();
 
-  public PlayerBoard getPlayerBoard(int id) {
-    return playerBoards.get(id);
-  }
+    public PlayerBoard addNewPlayerBoard() {
+        PlayerBoard playerBoard = new PlayerBoard();
+        playerBoards.add(playerBoard);
+        em.persist(playerBoard);
+        return playerBoard;
+    }
+
+    public PlayerBoard getPlayerBoard(int id) {
+        return playerBoards.get(id);
+    }
 }
